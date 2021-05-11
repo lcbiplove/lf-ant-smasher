@@ -4,30 +4,21 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ball collision</title>
+    <title>Ant Smasher</title>
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <canvas id="first-canvas"></canvas>
-    <canvas id="second-canvas"></canvas>
+
     <script src="js/constants.js"></script>
     <script src="js/Ball.js"></script>
     <script src="js/BallCollision.js"></script>
     <script>
       new BallCollision({
         id: "first-canvas",
-        width: 600,
-        height: 600,
         numOfBalls: 50,
         colors: ["teal", "pink", "salmon"]
-      });
-      new BallCollision({
-        id: "second-canvas",
-        width: 400,
-        height: 400,
-        numOfBalls: 50,
-        ballSizes: [8, 12, 16]
       });
     </script>
   </body>
