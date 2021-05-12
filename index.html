@@ -9,16 +9,29 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <canvas id="first-canvas"></canvas>
+    <div id="first-canvas">
+      <canvas></canvas>
+      <img class="ant-alive" src="images/ant-alive.png" />
+      <img class="ant-dead" src="images/ant-dead.png" />
+    </div>
+    <div id="second-canvas">
+      <canvas></canvas>
+      <img class="ant-alive" src="images/ant-alive.png" />
+      <img class="ant-dead" src="images/ant-dead.png" />
+    </div>
 
     <script src="js/constants.js"></script>
-    <script src="js/Ball.js"></script>
-    <script src="js/BallCollision.js"></script>
+    <script src="js/Ant.js"></script>
+    <script src="js/AntSmasher.js"></script>
+
     <script>
-      new BallCollision({
-        id: "first-canvas",
-        numOfBalls: 50,
-        colors: ["teal", "pink", "salmon"]
+      new AntSmasher({
+        id: "second-canvas",
+        numOfAnts: 20,
+        dimension: {
+          width: 50,
+          height: 40
+        }
       });
     </script>
   </body>
