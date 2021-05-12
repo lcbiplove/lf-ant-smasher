@@ -27,7 +27,7 @@ function Ant(x, y, dimension, antAliveImage, context) {
     context.restore();
   };
 
-  const handlerFourSideCollision = canvasProps => {
+  const handleWallCollision = canvasProps => {
     if (this.x <= 0 || this.x + this.width >= canvasProps.width) {
       this.speed.x = -this.speed.x;
     }
@@ -36,13 +36,6 @@ function Ant(x, y, dimension, antAliveImage, context) {
     }
     this.x += this.speed.x;
     this.y += this.speed.y;
-  };
-
-  const rotate = (speed, angle) => {
-    return (newSpeed = {
-      x: speed.x * Math.cos(angle) - speed.y * Math.sin(angle),
-      y: speed.x * Math.sin(angle) + speed.y * Math.cos(angle)
-    });
   };
 
   const handleTwonAntsCollision = ants => {
@@ -54,39 +47,7 @@ function Ant(x, y, dimension, antAliveImage, context) {
         this.y < ant.y + ant.height &&
         this.y + this.height > ant.y
       ) {
-        const dx = ant.x - this.x;
-        const dy = ant.y - this.y;
-
-        const xDeltaVel = this.speed.x - ant.speed.x;
-        const yDeltaVel = this.speed.y - ant.speed.y;
-
-        if (xDeltaVel * dx + yDeltaVel * dy >= 0) {
-          const angle = -Math.atan2(ant.y - this.y, ant.x - this.x);
-          const mass = 1;
-
-          const m1 = mass;
-          const m2 = mass;
-
-          const u1 = rotate(this.speed, angle);
-          const u2 = rotate(ant.speed, angle);
-
-          const v1 = {
-            x: (u1.x * (m1 - m2)) / (m1 + m2) + (u2.x * 2 * m2) / (m1 + m2),
-            y: u1.y
-          };
-          const v2 = {
-            x: (u2.x * (m1 - m2)) / (m1 + m2) + (u1.x * 2 * m2) / (m1 + m2),
-            y: u2.y
-          };
-
-          const finalVel1 = rotate(v1, -angle);
-          const finalVel2 = rotate(v2, -angle);
-
-          this.speed.x = finalVel1.x;
-          this.speed.y = finalVel1.y;
-          ant.speed.x = finalVel2.x;
-          ant.speed.y = finalVel2.y;
-        }
+        handleBallCollision(this, ant);
       }
     });
   };
@@ -94,7 +55,7 @@ function Ant(x, y, dimension, antAliveImage, context) {
   this.update = (ants, canvasProps) => {
     this.draw();
 
-    handlerFourSideCollision(canvasProps);
+    handleWallCollision(canvasProps);
 
     handleTwonAntsCollision(ants);
   };

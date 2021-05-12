@@ -6,30 +6,7 @@ function AntSmasher(props) {
 
   this.score = 0;
 
-  const createScore = () => {
-    const container = document.getElementById(props.id);
-    container.style.position = "relative";
-
-    const div = document.createElement("div");
-
-    div.style.position = "absolute";
-    div.style.top = "5px";
-    div.style.left = "5px";
-    div.style.zIndex = "2";
-    div.style.fontSize = "20px";
-
-    div.innerHTML = `Score : ${this.score}`;
-
-    container.appendChild(div);
-
-    return div;
-  };
-
-  const updateScore = score => {
-    this.scoreDiv.innerHTML = `Score : ${this.score}`;
-  };
-
-  this.scoreDiv = createScore();
+  this.scoreDiv = createScore(props.id, this.score);
 
   this.numOfAnts = props.numOfAnts || DEFAULT_NUM_OF_ANTS;
   this.ants = [];
@@ -45,27 +22,22 @@ function AntSmasher(props) {
 
   this.dimension = !props.dimension ? DEFAULT_ANT_DIMENSION : props.dimension;
 
-  const ants = [];
+  this.createAnts = () => {
+    for (let ind = 0; ind < this.numOfAnts; ind++) {
+      const x = randomPosition(
+        this.dimension.width,
+        this.width - this.dimension.width
+      );
+      const y = randomPosition(
+        this.dimension.height,
+        this.height - this.dimension.height
+      );
 
-  const randomPosition = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1) + min);
+      this.ants.push(
+        new Ant(x, y, this.dimension, this.antAliveImage, this.context)
+      );
+    }
   };
-
-  for (let ind = 0; ind < this.numOfAnts; ind++) {
-    // Prevent position outside of the canvas
-    const x = randomPosition(
-      this.dimension.width,
-      this.width - this.dimension.width
-    );
-    const y = randomPosition(
-      this.dimension.height,
-      this.height - this.dimension.height
-    );
-
-    ants.push(new Ant(x, y, this.dimension, this.antAliveImage, this.context));
-  }
-
-  this.ants = ants;
 
   this.draw = () => {
     this.context.clearRect(0, 0, this.width, this.height);
@@ -95,10 +67,14 @@ function AntSmasher(props) {
         ant.died(this.antDeadImage);
         this.score++;
 
-        updateScore(this.score);
+        updateScore(this.scoreDiv, this.score);
       }
     });
   };
+
+  this.draw();
+
+  this.createAnts();
 
   this.update();
 }
